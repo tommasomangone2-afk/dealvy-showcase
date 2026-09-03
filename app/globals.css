@@ -1,0 +1,235 @@
+/*
+ * app/globals.css  (excerpt)
+ *
+ * Dealvy's design system. This is a trimmed excerpt of the full stylesheet: it keeps
+ * the complete design-token layer and a representative set of components that use it
+ * (hero, search, categories, product cards, why-cards, a modal, toast, responsive
+ * layer). Repetitive component rules from the full file are omitted for readability.
+ *
+ * Design language: a small fixed palette (#0B3954 navy / #00E676 green / #F5F7FA page),
+ * hairline borders, soft layered shadows, one consistent card radius. Colours, radii,
+ * shadows and an ink scale are all driven by tokens so components stay consistent.
+ *
+ * Comments and class names were translated from Italian for this showcase.
+ */
+
+@import "tailwindcss";
+
+:root {
+  /* ── Brand palette ─────────────────────────────────────────────── */
+  --dv-blue: #0B3954;
+  --dv-blue-soft: #0d4a6b;
+  --dv-green: #00E676;
+  --dv-green-deep: #00a855;
+  --dv-page: #F5F7FA;
+  --dv-surface: #ffffff;
+
+  /* ── Ink scale (text) ──────────────────────────────────────────── */
+  --dv-ink: #0B3954;
+  --dv-ink-2: #5a6a75;
+  --dv-ink-3: #9aa5b0;
+
+  /* ── Lines & fills ─────────────────────────────────────────────── */
+  --dv-hairline: #e9edf2;
+  --dv-hairline-2: #eef1f5;
+  --dv-fill-soft: #f2f5f9;
+  --dv-mint: #ecfdf3;
+
+  /* ── Radii ─────────────────────────────────────────────────────── */
+  --dv-r-card: 16px;
+  --dv-r-ctrl: 12px;
+  --dv-r-sm: 10px;
+
+  /* ── Elevation ─────────────────────────────────────────────────── */
+  --dv-shadow: 0 1px 2px rgba(11,57,84,0.04), 0 6px 20px rgba(11,57,84,0.05);
+  --dv-shadow-hover: 0 2px 6px rgba(11,57,84,0.06), 0 12px 28px rgba(11,57,84,0.10);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { overflow-x: hidden; -webkit-text-size-adjust: 100%; touch-action: pan-x pan-y; }
+body {
+  font-family: var(--font-open-sans), 'Open Sans', Arial, sans-serif;
+  background: var(--dv-page);
+  color: var(--dv-ink);
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+/* Respect the iOS safe area at the bottom of the viewport. */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  body { padding-bottom: env(safe-area-inset-bottom); }
+}
+
+/* ── Hero ─────────────────────────────────────────────────────────
+   Full navy with one soft radial glow — restrained, not a loud gradient. */
+.hero {
+  background: linear-gradient(180deg, #0e456a 0%, #0B3954 78%);
+  min-height: 420px; height: 420px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 3rem 1.5rem 2.5rem; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; width: 620px; height: 620px;
+  background: radial-gradient(circle, rgba(0,230,118,0.10) 0%, transparent 68%);
+  top: -140px; right: -120px; border-radius: 50%;
+}
+.logo {
+  font-family: var(--font-montserrat), 'Montserrat', 'Arial Black', sans-serif;
+  font-size: 4rem; font-weight: 900; color: #fff; letter-spacing: 6px;
+  position: relative; z-index: 1; line-height: 1;
+}
+.logo span { color: var(--dv-green); }
+.slogan {
+  color: var(--dv-green);
+  font-family: var(--font-montserrat), 'Montserrat', 'Arial Black', sans-serif;
+  font-size: 0.9rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+  margin: 0.6rem 0 2.5rem; position: relative; z-index: 1;
+}
+
+/* ── Search bar: soft pill, deep but clean shadow ─────────────────── */
+.search-wrap { width: 100%; max-width: 680px; position: relative; z-index: 1; }
+.search-box {
+  display: flex; background: #fff; border-radius: 16px; overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.08);
+}
+.search-input {
+  flex: 1; border: none; outline: none; padding: 1.15rem 1.5rem; font-size: 16px;
+  font-family: var(--font-open-sans), 'Open Sans', Arial, sans-serif; color: var(--dv-ink); background: transparent;
+}
+.search-input::placeholder { color: #9aa5b0; }
+.search-btn {
+  background: var(--dv-green); border: none; padding: 0 1.75rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: background 0.2s; border-radius: 0 16px 16px 0;
+}
+.search-btn:hover { background: #00c968; }
+
+/* Popular / recent query chips */
+.popular-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.25rem; justify-content: center; }
+.tag {
+  background: rgba(255,255,255,0.08); color: #eef4f8; border: 1px solid rgba(255,255,255,0.16);
+  padding: 0.35rem 0.95rem; border-radius: 50px; font-size: 0.8rem; cursor: pointer; transition: all 0.18s;
+}
+.tag:hover { background: var(--dv-green); color: var(--dv-blue); border-color: var(--dv-green); font-weight: 600; }
+
+/* ── Section wrapper ──────────────────────────────────────────────── */
+.section { padding: 2.5rem 1.5rem; max-width: 1100px; margin: 0 auto; }
+
+/* ── Categories (horizontal scroll of pills) ──────────────────────── */
+.cat-scroll-wrap { display: flex; gap: 0.6rem; overflow-x: auto; padding: 0 0 0.75rem; margin-bottom: 1rem; scrollbar-width: none; }
+.cat-scroll-wrap::-webkit-scrollbar { display: none; }
+.cat-pill {
+  display: flex; align-items: center; gap: 0.5rem; background: var(--dv-surface); border: 1px solid var(--dv-hairline);
+  border-radius: 50px; padding: 0.5rem 1.05rem; cursor: pointer; white-space: nowrap; transition: all 0.18s;
+  box-shadow: 0 1px 2px rgba(11,57,84,0.04); flex-shrink: 0;
+}
+.cat-pill:hover, .cat-pill.active { border-color: var(--dv-blue); background: #f4f8fb; }
+.cat-pill-name { font-size: 0.82rem; font-weight: 600; color: var(--dv-ink); }
+
+/* ── Filter buttons (shared by sub-categories, brand, memory) ─────── */
+.filter-btn {
+  padding: 0.4rem 0.95rem; border-radius: 50px; border: 1.5px solid var(--dv-blue);
+  background: var(--dv-surface); color: var(--dv-blue); cursor: pointer; font-weight: 600; font-size: 0.78rem;
+  transition: all 0.18s; font-family: var(--font-open-sans), 'Open Sans', Arial, sans-serif;
+}
+.filter-btn:hover, .filter-btn.active { background: var(--dv-blue); color: var(--dv-green); }
+
+/* ── Search results: card + action rail ───────────────────────────── */
+.results-grid { display: flex; flex-direction: column; gap: 0.75rem; }
+.product-wrap { position: relative; display: flex; gap: 0.4rem; align-items: stretch; }
+.product-main {
+  flex: 1; display: flex; background: var(--dv-surface); border-radius: var(--dv-r-card);
+  box-shadow: var(--dv-shadow); border: 1px solid var(--dv-hairline); transition: all 0.18s; overflow: hidden;
+}
+.product-main:hover { border-color: var(--dv-blue); box-shadow: var(--dv-shadow-hover); }
+.product-link { flex: 1; display: flex; gap: 1rem; align-items: center; padding: 1rem; text-decoration: none; }
+/* Reserved dimensions avoid layout shift (CLS) while the image loads. */
+.product-img {
+  width: 80px; height: 80px; min-width: 80px; aspect-ratio: 1 / 1;
+  object-fit: contain; border-radius: 10px; flex-shrink: 0; background: var(--dv-fill-soft); display: block;
+}
+.product-title { font-weight: 600; color: var(--dv-ink); font-size: 0.88rem; margin-bottom: 0.25rem; line-height: 1.4; }
+.product-price {
+  color: var(--dv-green-deep); font-weight: 800; font-size: 1.2rem;
+  font-family: var(--font-montserrat), 'Montserrat', 'Arial Black', sans-serif;
+}
+.product-source { color: var(--dv-ink-2); font-size: 0.75rem; }
+
+/* Condition badges */
+.badge { padding: 0.22rem 0.65rem; border-radius: 7px; font-size: 0.72rem; font-weight: 700; flex-shrink: 0; align-self: flex-start; }
+.badge-new { background: var(--dv-mint); color: #158a4a; }
+.badge-used { background: #fff3e0; color: #e65100; }
+
+/* Highlights the cheapest result */
+.best-price-badge {
+  position: absolute; top: -10px; left: 12px; background: var(--dv-blue); color: var(--dv-green);
+  font-size: 0.68rem; font-weight: 800; padding: 0.22rem 0.75rem; border-radius: 7px; z-index: 10; letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(11,57,84,0.2);
+}
+
+/* ── Why cards ────────────────────────────────────────────────────── */
+.why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2.5rem; }
+.why-card {
+  background: var(--dv-surface); border-radius: var(--dv-r-card); padding: 1.75rem 1.25rem; text-align: center;
+  box-shadow: var(--dv-shadow); border: 1px solid var(--dv-hairline); transition: all 0.18s;
+}
+.why-card:hover { border-color: var(--dv-blue); transform: translateY(-3px); box-shadow: var(--dv-shadow-hover); }
+.why-icon { display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; background: var(--dv-fill-soft); border-radius: 14px; margin: 0 auto 1rem; }
+.why-title { font-family: var(--font-montserrat), 'Montserrat', sans-serif; font-weight: 700; color: var(--dv-ink); margin-bottom: 0.4rem; font-size: 0.95rem; }
+.why-desc { color: var(--dv-ink-2); font-size: 0.82rem; line-height: 1.6; }
+
+/* ── Toast ────────────────────────────────────────────────────────── */
+.toast {
+  position: fixed; bottom: 5rem; left: 50%; transform: translateX(-50%);
+  background: var(--dv-blue); color: var(--dv-green); padding: 0.75rem 1.5rem; border-radius: 50px;
+  font-weight: 700; font-size: 0.85rem; box-shadow: 0 8px 28px rgba(11,57,84,0.3); z-index: 9999;
+  animation: fadeIn 0.3s ease; white-space: nowrap;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateX(-50%) translateY(10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+
+/* ── Modal (base pattern reused across dialogs) ───────────────────── */
+.modal-overlay { position: fixed; inset: 0; background: rgba(11,25,38,0.55); backdrop-filter: blur(2px); z-index: 9998; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+.modal { background: #fff; border-radius: 20px; padding: 2rem; max-width: 400px; width: 100%; box-shadow: 0 24px 70px rgba(0,0,0,0.28); }
+.modal-title { font-family: var(--font-montserrat), 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--dv-ink); margin-bottom: 0.5rem; }
+.modal-sub { font-size: 0.82rem; color: var(--dv-ink-2); margin-bottom: 1.5rem; line-height: 1.5; }
+.modal-input { width: 100%; padding: 0.85rem 1rem; border: 1.5px solid var(--dv-hairline); border-radius: var(--dv-r-ctrl); font-size: 1rem; outline: none; color: var(--dv-ink); margin-bottom: 1rem; transition: border-color 0.18s; }
+.modal-input:focus { border-color: var(--dv-blue); }
+.modal-btn { width: 100%; padding: 0.9rem; background: var(--dv-blue); color: var(--dv-green); border: none; border-radius: var(--dv-r-ctrl); font-size: 1rem; font-weight: 700; cursor: pointer; font-family: var(--font-montserrat), sans-serif; margin-bottom: 0.5rem; }
+.modal-cancel { width: 100%; padding: 0.7rem; background: none; border: 1.5px solid var(--dv-hairline); border-radius: var(--dv-r-ctrl); font-size: 0.9rem; color: var(--dv-ink-2); cursor: pointer; }
+
+/* ── Autocomplete dropdown ────────────────────────────────────────── */
+.suggestions-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: #fff; border-radius: 0 0 16px 16px; box-shadow: 0 12px 30px rgba(11,57,84,0.16); z-index: 1000; overflow: hidden; margin-top: 2px; }
+.suggestion-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.72rem 1.25rem; cursor: pointer; font-size: 0.88rem; color: var(--dv-ink); border-bottom: 1px solid var(--dv-hairline-2); transition: background 0.1s; }
+.suggestion-item:last-child { border-bottom: none; }
+.suggestion-item:hover, .suggestion-active { background: #f2faf6; }
+
+/* [ ...share modal, recipient list and other component rules omitted for brevity... ] */
+
+/* ═══════════════════════════════════════════════════════════════════
+   Mobile — the layout shifts to an app-like shell under 640px
+   ═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  .hero { min-height: auto; height: auto; padding: 3.5rem 1rem 1.25rem; justify-content: flex-start; }
+  .logo { font-size: 1.85rem; letter-spacing: 3px; }
+  .slogan { font-size: 0.62rem; letter-spacing: 2px; margin-bottom: 1rem; }
+  .search-box { border-radius: 14px; box-shadow: 0 6px 22px rgba(0,0,0,0.2); }
+  .search-input { padding: 0.9rem 1rem; }
+  .search-btn { padding: 0 1.1rem; border-radius: 0 14px 14px 0; }
+  .section { padding: 0 0 7rem; background: var(--dv-page); }
+
+  /* Categories become circular icon buttons, like a native app */
+  .cat-scroll-wrap { padding: 1rem 0.5rem 0.75rem; background: #fff; margin-bottom: 0.5rem; gap: 0; justify-content: space-around; border-bottom: 1px solid var(--dv-hairline); }
+  .cat-pill { flex-direction: column; background: transparent; border: none; padding: 0 0.2rem; box-shadow: none; gap: 0.35rem; min-width: 56px; }
+  .cat-pill-icon-wrap { display: flex; align-items: center; justify-content: center; width: 54px; height: 54px; border-radius: 50%; background: var(--dv-fill-soft); border: 2px solid transparent; transition: all 0.2s; }
+  .cat-pill.active .cat-pill-icon-wrap { background: #e8f0f6; border-color: var(--dv-blue); }
+  .cat-pill-name { font-size: 0.65rem; }
+
+  .results-grid { gap: 0.5rem; padding: 0.5rem; }
+  .product-main { border-radius: 14px; }
+  .product-img { width: 72px !important; height: 72px !important; min-width: 72px; }
+  .product-title { font-size: 0.8rem; }
+  .product-price { font-size: 0.98rem; }
+
+  .why-grid { grid-template-columns: 1fr 1fr; gap: 0.5rem; padding: 0.5rem; margin: 0; }
+  .why-card { padding: 1rem 0.75rem; border-radius: 14px; }
+}
